@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Etna Labs — Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    /* ─────────────────────────────────────────
+       RESET & SHARED
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand:  #C45A48;
+      --dark:   #111111;
+      --mid:    #555;
+      --light:  #999;
+      --bg:     #f0ece6;
+      --card-w: 580px;
+      --card-h: 332px;
+    }
+
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      color: var(--dark);
+    }
+
+    /* ─────────────────────────────────────────
+       HEADER
+    ───────────────────────────────────────── */
+    .site-header {
+      text-align: center;
+      padding: 44px 24px 0;
+    }
+    .site-header h1 {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--dark); margin-bottom: 5px;
+    }
+    .site-header p {
+      font-size: 10px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--brand);
+    }
+
+    /* ─────────────────────────────────────────
+       TABS
+    ───────────────────────────────────────── */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 32px auto 0;
+      width: fit-content;
+      border: 1.5px solid #c8c0b8;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #e5e0d8;
+    }
+    .tab-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 10px 28px;
+      border: none; cursor: pointer;
+      background: transparent;
+      color: var(--light);
+      transition: background 0.15s, color 0.15s;
+    }
+    .tab-btn:not(:last-child) { border-right: 1.5px solid #c8c0b8; }
+    .tab-btn.active { background: var(--brand); color: #fff; }
+    .tab-btn:not(.active):hover { background: rgba(196,90,72,0.08); color: var(--brand); }
+
+    /* ─────────────────────────────────────────
+       TAB PANELS
+    ───────────────────────────────────────── */
+    .tab-panel          { display: none !important; }
+    .tab-panel.active   { display: block !important; }
+    #panel-card.active  { display: block !important; }
+
+    /* ═════════════════════════════════════════
+       SIGNATURE TOOL
+    ═════════════════════════════════════════ */
+    #panel-sig {
+      padding: 40px 24px 80px;
+    }
+    .sig-layout {
+      display: flex;
+      gap: 36px;
+      max-width: 1020px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+    .sig-form {
+      flex: 0 0 300px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 28px 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .sig-preview-panel { flex: 1; min-width: 0; }
+
+    /* form elements */
+    .sig-form .sec { margin-bottom: 22px; }
+    .sig-form .sec-title {
+      font-size: 10px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #aaa;
+      margin-bottom: 12px; padding-bottom: 6px;
+      border-bottom: 1px solid #f0ebe8;
+    }
+    .sig-form label {
+      display: block; font-size: 12px;
+      color: #555; margin-bottom: 4px; margin-top: 12px;
+    }
+    .sig-form label:first-of-type { margin-top: 0; }
+    .sig-form input[type="text"] {
+      width: 100%; border: 1px solid #e0dbd8;
+      border-radius: 6px; padding: 8px 10px;
+      font-family: inherit; font-size: 13px; color: #222;
+      outline: none; transition: border-color 0.15s; background: #fff;
+    }
+    .sig-form input[type="text"]:focus { border-color: var(--brand); }
+    .sig-form input[type="text"]::placeholder { color: #bbb; }
+    .sig-form .fixed-box {
+      font-size: 11.5px; color: #999; line-height: 1.7;
+      background: #faf8f6; border: 1px solid #ede8e5;
+      border-radius: 6px; padding: 8px 10px; margin-top: 6px;
+    }
+    .sig-form .hint { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+    /* preview */
+    .preview-label {
+      font-size: 10px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #aaa; margin-bottom: 12px;
+    }
+    .preview-box {
+      background: #eae7e3; border-radius: 10px;
+      padding: 30px; margin-bottom: 16px; overflow-x: auto;
+    }
+
+    /* buttons */
+    .btn-row { display: flex; gap: 10px; margin-bottom: 8px; }
+    .btn-html {
+      flex: 1; background: var(--brand); color: #fff;
+      border: none; border-radius: 7px; padding: 11px 12px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.03em; cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-html:hover { background: #b04d3d; }
+    .btn-html:active { transform: scale(0.98); }
+    .btn-html.ok { background: #4caf7d; }
+    .btn-plain {
+      flex: 1; background: #fff; color: #555;
+      border: 1.5px solid #d8d0cc; border-radius: 7px; padding: 11px 12px;
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.03em; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    }
+    .btn-plain:hover { border-color: var(--brand); color: var(--brand); background: #fdf8f7; }
+    .btn-plain:active { transform: scale(0.98); }
+    .btn-plain.ok { background: #f0faf5; border-color: #4caf7d; color: #4caf7d; }
+    .copy-hint {
+      font-size: 11px; color: #aaa; text-align: center; margin-top: 8px;
+    }
+
+    /* plain text preview */
+    .plain-preview {
+      background: #fff; border: 1px solid #e8e2de;
+      border-radius: 8px; padding: 18px 20px;
+      font-family: 'SF Mono', 'Menlo', 'Courier New', monospace;
+      font-size: 12px; line-height: 1.75; white-space: pre; overflow-x: auto;
+      color: #333;
+    }
+    .pt-name   { color: #111; font-weight: 700; }
+    .pt-sep    { color: #bbb; }
+    .pt-brand  { color: var(--brand); font-weight: 600; }
+    .pt-meta   { color: #666; }
+    .pt-link   { color: var(--brand); }
+    .pt-rule   { color: #d0cac7; }
+
+    /* ═════════════════════════════════════════
+       CARD TOOL
+    ═════════════════════════════════════════ */
+    #panel-card {
+      padding: 40px 24px 96px;
+    }
+    .card-layout {
+      display: flex; gap: 48px;
+      align-items: flex-start;
+      width: 100%; max-width: 1260px;
+      margin: 0 auto;
+    }
+    .card-form {
+      width: 248px; flex-shrink: 0;
+      position: sticky; top: 40px;
+    }
+    .card-form .sec-label {
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 18px;
+    }
+    .card-form .field { margin-bottom: 18px; }
+    .card-form .field label {
+      display: block; font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 6px;
+    }
+    .card-form input[type="text"] {
+      width: 100%; padding: 9px 11px;
+      border: 1.5px solid #cdc5bc; border-radius: 3px;
+      font-family: inherit; font-size: 13px;
+      color: var(--dark); background: white; outline: none;
+      transition: border-color 0.15s;
+    }
+    .card-form input[type="text"]:focus { border-color: var(--brand); }
+    .card-form input[type="text"]::placeholder { color: #c0b8b0; }
+    .card-form .email-row { display: flex; }
+    .card-form .email-row input { border-radius: 3px 0 0 3px; border-right: none; flex: 1; }
+    .card-form .email-suffix {
+      padding: 9px 8px; background: #eee8e1;
+      border: 1.5px solid #cdc5bc; border-left: none;
+      border-radius: 0 3px 3px 0; font-size: 11px; color: var(--mid);
+      white-space: nowrap; display: flex; align-items: center;
+    }
+    .card-form hr.divider { border: none; border-top: 1px solid #cdc5bc; margin: 24px 0; }
+    .card-form .fixed-info {
+      font-size: 11px; line-height: 1.85; color: var(--mid);
+      background: #eeebe6; border: 1px solid #ddd6cf;
+      border-radius: 3px; padding: 10px 12px;
+    }
+    .card-export-col {
+      width: 160px; flex-shrink: 0;
+      position: sticky; top: 40px;
+      display: flex; flex-direction: column;
+      gap: 0; padding-top: 22px;
+    }
+    .export-label {
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 14px;
+    }
+    .btn-group { display: flex; flex-direction: column; gap: 8px; }
+    .btn-group button {
+      font-family: inherit; font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 12px 16px; border: none; border-radius: 3px;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .btn-group .btn-brand { background: var(--brand); color: white; }
+    .btn-group .btn-brand:hover { background: #b04d3d; }
+    .btn-group .btn-outline {
+      background: transparent; color: var(--dark);
+      border: 1.5px solid #aaa49d;
+    }
+    .btn-group .btn-outline:hover { background: rgba(0,0,0,0.04); border-color: var(--dark); }
+
+    /* card preview */
+    .card-preview-panel { flex: 1; }
+    .panel-label {
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 10px;
+    }
+    .cards-stack { display: flex; flex-direction: column; gap: 28px; }
+    .card {
+      width: var(--card-w); height: var(--card-h);
+      border-radius: 6px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08);
+      overflow: hidden; position: relative; flex-shrink: 0;
+    }
+
+    /* FRONT */
+    #card-front {
+      background: var(--brand);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .front-url {
+      position: absolute; bottom: 22px;
+      left: 50%; transform: translateX(-50%);
+      font-size: 9.5px; font-weight: 400; letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.60); white-space: nowrap;
+    }
+    .front-logo {
+      display: block; height: 130px; width: auto;
+    }
+
+    /* BACK */
+    #card-back {
+      background: #ffffff;
+      position: relative;
+    }
+    #card-back::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px; background: var(--brand);
+    }
+    .back-body {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      padding: 30px 34px 36px;
+      box-sizing: border-box;
+    }
+    /* Top row: logo left, tagline right */
+    .back-top-row {
+      display: flex; align-items: flex-start;
+      justify-content: space-between;
+    }
+    .back-logo { height: 32px; width: auto; }
+    .back-tagline {
+      text-align: right;
+      line-height: 1.9;
+    }
+    .back-tagline .tl-plain {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px; font-weight: 300;
+      color: #666; display: block;
+      letter-spacing: 0.01em;
+    }
+    .back-tagline .tl-serif {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 11px;
+      color: var(--brand); display: block;
+    }
+    /* Bottom row: ident left, contacts right */
+    .back-bottom-row {
+      display: flex; align-items: flex-end;
+      justify-content: space-between;
+    }
+    .back-ident {}
+    .back-name {
+      font-size: 24px; line-height: 1;
+      color: var(--dark); margin-bottom: 7px;
+    }
+    .back-name .firstname { font-weight: 800; }
+    .back-name .lastname  { font-weight: 300; }
+    .back-title {
+      font-size: 11px; font-weight: 600;
+      color: var(--brand); letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .back-contact-right {
+      text-align: right; display: flex;
+      flex-direction: column; gap: 3px;
+    }
+    .back-contact-right span {
+      font-size: 10.5px; color: #666; line-height: 1.5;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 32px; left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: var(--dark); color: white;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 12px 24px; border-radius: 3px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s, transform 0.22s;
+      z-index: 999;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="site-header">
+  <h1>Etna Labs</h1>
+  <p>Brand Tools</p>
+</header>
+
+<!-- ── Tabs ── -->
+<div style="display:flex;justify-content:center;margin-top:32px;">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('sig', this)">Email Signature</button>
+    <button class="tab-btn"        onclick="switchTab('card', this)">Business Card</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB 1 — EMAIL SIGNATURE
+═══════════════════════════════════════ -->
+<div id="panel-sig" class="tab-panel active">
+  <div class="sig-layout">
+
+    <!-- Form -->
+    <div class="sig-form">
+      <div class="sec">
+        <div class="sec-title">个人信息</div>
+        <label>姓名</label>
+        <input type="text" id="s-name" placeholder="Your Name" oninput="sigUpdate()">
+        <label>职位</label>
+        <input type="text" id="s-title" placeholder="Your Title" oninput="sigUpdate()">
+        <label>电话</label>
+        <input type="text" id="s-phone" placeholder="(650) 668-4045" oninput="sigUpdate()">
+      </div>
+      <div class="sec">
+        <div class="sec-title">公司信息（固定）</div>
+        <div class="fixed-box">600 California St, San Francisco, CA 94108<br>etnalabs.co</div>
+      </div>
+      <div class="sec">
+        <div class="sec-title">社交媒体（选填）</div>
+        <label>LinkedIn URL</label>
+        <input type="text" id="s-linkedin" placeholder="linkedin.com/in/yourname" oninput="sigUpdate()">
+        <label>X 用户名</label>
+        <input type="text" id="s-x" placeholder="yourhandle（不加 @）" oninput="sigUpdate()">
+        <p class="hint">留空则不显示</p>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="sig-preview-panel">
+      <p class="preview-label">HTML 签名预览</p>
+      <div class="preview-box"><div id="sig-render"></div></div>
+
+      <div class="btn-row">
+        <button class="btn-html"  id="btn-copy-html"  onclick="sigCopyHTML()">复制 HTML 签名</button>
+        <button class="btn-plain" id="btn-copy-plain" onclick="sigCopyPlain()">复制纯文本签名</button>
+      </div>
+      <p class="copy-hint">
+        HTML → Gmail / Outlook / Apple Mail 签名设置中 HTML 模式粘贴<br>
+        纯文本 → 不支持 HTML 的客户端
+      </p>
+
+      <div style="margin-top:20px;">
+        <p class="preview-label">纯文本预览（颜色仅为示意）</p>
+        <div class="plain-preview" id="sig-plain-render"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TAB 2 — BUSINESS CARD
+═══════════════════════════════════════ -->
+<div id="panel-card" class="tab-panel">
+  <div class="card-layout">
+
+    <!-- Form -->
+    <div class="card-form">
+      <p class="sec-label">Card Info</p>
+      <div class="field">
+        <label>First Name</label>
+        <input type="text" id="c-first" placeholder="e.g. Siqi" oninput="cardUpdate()">
+      </div>
+      <div class="field">
+        <label>Last Name</label>
+        <input type="text" id="c-last" placeholder="e.g. Chen" oninput="cardUpdate()">
+      </div>
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="c-title" placeholder="e.g. Investment Analyst" oninput="cardUpdate()">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <div class="email-row">
+          <input type="text" id="c-email" placeholder="firstname.lastname" oninput="cardUpdate()">
+          <div class="email-suffix">@etnalabs.co</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Phone</label>
+        <input type="text" id="c-phone" value="(650) 668-4045" oninput="cardUpdate()">
+      </div>
+
+      <hr class="divider">
+      <p class="sec-label">Fixed Info</p>
+      <div class="fixed-info">
+        600 California St<br>San Francisco, CA 94108<br>etnalabs.co
+      </div>
+    </div>
+
+    <!-- Card preview -->
+    <div class="card-preview-panel">
+      <div class="cards-stack">
+
+        <div>
+          <p class="panel-label">Front</p>
+          <div class="card" id="card-front">
+            <span class="front-url">etnalabs.co</span>
+            <img class="front-logo" src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/Etnalabs_redback.png" alt="Etna Labs" crossorigin="anonymous">
+          </div>
+        </div>
+
+        <div>
+          <p class="panel-label">Back</p>
+          <div class="card" id="card-back">
+            <div class="back-body">
+              <!-- Top row: logo left / tagline right -->
+              <div class="back-top-row">
+                <img class="back-logo"
+                     src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/EtnaLabs_horizontal_trans.png"
+                     alt="Etna Labs" crossorigin="anonymous">
+                <div class="back-tagline">
+                  <span class="tl-plain">We Invest Like Researchers.</span>
+                  <span class="tl-serif">Deep Conviction.</span>
+                  <span class="tl-plain">Long View.</span>
+                </div>
+              </div>
+              <!-- Bottom row: name/title left / contacts right -->
+              <div class="back-bottom-row">
+                <div class="back-ident">
+                  <div class="back-name">
+                    <span class="firstname" id="c-prev-first">Your</span>&nbsp;<span class="lastname" id="c-prev-last">Name</span>
+                  </div>
+                  <div class="back-title" id="c-prev-title">Title</div>
+                </div>
+                <div class="back-contact-right">
+                  <span id="c-prev-email">name@etnalabs.co</span>
+                  <span id="c-prev-phone">(650) 668-4045</span>
+                  <span>600 California St, San Francisco, CA</span>
+                  <span>etnalabs.co</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Export buttons — independent right column -->
+    <div class="card-export-col">
+      <p class="export-label">Export</p>
+      <div class="btn-group">
+        <button class="btn-brand"   onclick="cardExportBoth()">↓ Both Sides</button>
+        <button class="btn-outline" onclick="cardExportSingle('front')">↓ Front Only</button>
+        <button class="btn-outline" onclick="cardExportSingle('back')">↓ Back Only</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+/* ── Tab switching ── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ════════════════════════════════════════
+   SIGNATURE
+════════════════════════════════════════ */
+const SIG_LOGO = "https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/EtnaLabs_vertical_trans.png";
+const ICON_LI  = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzk5OTk5OSI+PHBhdGggZD0iTTIwLjQ0NyAyMC40NTJoLTMuNTU0di01LjU2OWMwLTEuMzI4LS4wMjctMy4wMzctMS44NTItMy4wMzctMS44NTMgMC0yLjEzNiAxLjQ0NS0yLjEzNiAyLjkzOXY1LjY2N0g5LjM1MVY5aDMuNDE0djEuNTYxaC4wNDZjLjQ3Ny0uOSAxLjYzNy0xLjg1IDMuMzctMS44NSAzLjYwMSAwIDQuMjY3IDIuMzcgNC4yNjcgNS40NTV2Ni4yODZ6TTUuMzM3IDcuNDMzYy0xLjE0NCAwLTIuMDYzLS45MjYtMi4wNjMtMi4wNjUgMC0xLjEzOC45Mi0yLjA2MyAyLjA2My0yLjA2MyAxLjE0IDAgMi4wNjQuOTI1IDIuMDY0IDIuMDYzIDAgMS4xMzktLjkyNSAyLjA2NS0yLjA2NCAyLjA2NXptMS43ODIgMTMuMDE5SDMuNTU1VjloMy41NjR2MTEuNDUyek0yMi4yMjUgMEgxLjc3MUMuNzkyIDAgMCAuNzc0IDAgMS43Mjl2MjAuNTQyQzAgMjMuMjI3Ljc5MiAyNCAxLjc3MSAyNGgyMC40NTFDMjMuMiAyNCAyNCAyMy4yMjcgMjQgMjIuMjcxVjEuNzI5QzI0IC43NzQgMjMuMiAwIDIyLjIyMiAwaC4wMDN6Ii8+PC9zdmc+";
+const ICON_X   = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjOTk5OTk5Ij48cGF0aCBkPSJNMTguMjQ0IDIuMjVoMy4zMDhsLTcuMjI3IDguMjYgOC41MDIgMTEuMjRIMTYuMTdsLTQuNzE0LTYuMjMxLTUuNDAxIDYuMjMxSDIuNzQ4bDcuNzMtOC44MzVMMS4yNTQgMi4yNUg4LjA4bDQuNzEzIDYuMjMxem0tMS4xNjEgMTcuNTJoMS44MzNMNy4wODQgNC4xMjZINS4xMTd6Ii8+PC9zdmc+";
+
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function sigFields() {
+  return {
+    name:     document.getElementById('s-name').value.trim()     || 'Your Name',
+    title:    document.getElementById('s-title').value.trim()    || 'Your Title',
+    phone:    document.getElementById('s-phone').value.trim()    || '(650) 668-4045',
+    linkedin: document.getElementById('s-linkedin').value.trim(),
+    xhandle:  document.getElementById('s-x').value.trim().replace(/^@/, '')
+  };
+}
+
+function buildSigHTML() {
+  const { name, title, phone, linkedin, xhandle } = sigFields();
+  let socialRow = '';
+  if (linkedin || xhandle) {
+    const li = linkedin ? `<td valign="middle" style="padding-right:10px;"><a href="https://${esc(linkedin.replace(/^https?:\/\//,''))}" style="text-decoration:none;display:block;"><img src="${ICON_LI}" alt="LinkedIn" width="14" height="14" style="display:block;width:14px;height:14px;"></a></td>` : '';
+    const x  = xhandle  ? `<td valign="middle"><a href="https://x.com/${esc(xhandle)}" style="text-decoration:none;display:block;"><img src="${ICON_X}" alt="X" width="14" height="14" style="display:block;width:14px;height:14px;"></a></td>` : '';
+    socialRow = `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;"><tr>${li}${x}</tr></table>`;
+  }
+  return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border-right:3px solid #C45A48;background:#ffffff;max-width:460px;width:460px;">
+  <tr><td style="padding:20px 24px 20px 28px;">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
+      <td valign="middle" style="padding-right:20px;">
+        <p style="margin:0 0 1px;font-size:15px;font-weight:700;color:#111111;letter-spacing:0.03em;">${esc(name)}</p>
+        <p style="margin:0 0 10px;font-size:11px;color:#555555;letter-spacing:0.08em;text-transform:uppercase;">${esc(title)}</p>
+        <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="border-top:1px solid #ecddd9;font-size:0;height:1px;padding:0 0 10px;">&nbsp;</td></tr></table>
+        <p style="margin:0 0 9px;font-size:11px;color:#C45A48;letter-spacing:0.03em;"><strong>Etna Labs</strong> <span style="color:#c0a49f;font-weight:400;"> | </span><span style="font-weight:400;">Deep Conviction, Long View</span></p>
+        <p style="margin:0;font-size:11px;color:#666666;line-height:1.75;">600 California St, San Francisco, CA 94108<br>${esc(phone)}<br><a href="https://etnalabs.co" style="color:#C45A48;text-decoration:none;">etnalabs.co</a></p>
+        ${socialRow}
+      </td>
+      <td valign="middle" style="width:1px;background:#e8d0ce;padding:0;" width="1"><div style="width:1px;height:80px;background:#e8d0ce;font-size:0;line-height:0;">&nbsp;</div></td>
+      <td valign="middle" style="width:72px;padding-left:20px;">
+        <img src="${SIG_LOGO}" alt="Etna Labs" width="72" style="display:block;width:72px;height:auto;">
+      </td>
+    </tr></table>
+  </td></tr>
+</table>`;
+}
+
+function buildSigPlainText() {
+  const { name, title, phone, linkedin, xhandle } = sigFields();
+  const rule = '─'.repeat(38);
+  let social = '';
+  if (linkedin) social += '\nLinkedIn  ' + (linkedin.startsWith('http') ? linkedin : 'https://' + linkedin);
+  if (xhandle)  social += '\nX (Twitter)  https://x.com/' + xhandle;
+  return `${name}  |  ${title}\n${rule}\nEtna Labs  |  Deep Conviction, Long View\n\n600 California St, San Francisco, CA 94108\n${phone}\netnalabs.co${social}`;
+}
+
+function buildSigPlainHTML() {
+  const { name, title, phone, linkedin, xhandle } = sigFields();
+  const rule = '─'.repeat(38);
+  let social = '';
+  if (linkedin) {
+    const url = linkedin.startsWith('http') ? linkedin : 'https://' + linkedin;
+    social += `\n<span class="pt-meta">LinkedIn  </span><span class="pt-link">${url}</span>`;
+  }
+  if (xhandle) social += `\n<span class="pt-meta">X (Twitter)  </span><span class="pt-link">https://x.com/${xhandle}</span>`;
+  return `<span class="pt-name">${name}</span><span class="pt-sep">  |  </span><span class="pt-meta">${title}</span>\n<span class="pt-rule">${rule}</span>\n<span class="pt-brand">Etna Labs</span><span class="pt-sep">  |  </span><span class="pt-meta">Deep Conviction, Long View</span>\n\n<span class="pt-meta">600 California St, San Francisco, CA 94108\n${phone}</span>\n<span class="pt-link">etnalabs.co</span>${social}`;
+}
+
+function sigUpdate() {
+  document.getElementById('sig-render').innerHTML = buildSigHTML();
+  document.getElementById('sig-plain-render').innerHTML = buildSigPlainHTML();
+}
+
+function sigCopyHTML() {
+  navigator.clipboard.writeText(buildSigHTML()).then(() => {
+    const b = document.getElementById('btn-copy-html');
+    b.textContent = '✓ 已复制 HTML'; b.classList.add('ok');
+    setTimeout(() => { b.textContent = '复制 HTML 签名'; b.classList.remove('ok'); }, 2000);
+  });
+}
+
+function sigCopyPlain() {
+  navigator.clipboard.writeText(buildSigPlainText()).then(() => {
+    const b = document.getElementById('btn-copy-plain');
+    b.textContent = '✓ 已复制纯文本'; b.classList.add('ok');
+    setTimeout(() => { b.textContent = '复制纯文本签名'; b.classList.remove('ok'); }, 2000);
+  });
+}
+
+/* ════════════════════════════════════════
+   BUSINESS CARD
+════════════════════════════════════════ */
+function cardUpdate() {
+  const first = document.getElementById('c-first').value.trim();
+  const last  = document.getElementById('c-last').value.trim();
+  const title = document.getElementById('c-title').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const phone = document.getElementById('c-phone').value.trim();
+  document.getElementById('c-prev-first').textContent = first || 'Your';
+  document.getElementById('c-prev-last').textContent  = last  || 'Name';
+  document.getElementById('c-prev-title').textContent = title || 'Title';
+  document.getElementById('c-prev-email').textContent = (email || 'name') + '@etnalabs.co';
+  document.getElementById('c-prev-phone').textContent = phone || '(650) 668-4045';
+}
+
+async function captureCard(id, bg) {
+  const el = document.getElementById(id);
+  return html2canvas(el, {
+    scale: 5, backgroundColor: bg,
+    useCORS: true, allowTaint: true, logging: false,
+    width: el.offsetWidth, height: el.offsetHeight,
+  });
+}
+
+function cardSlug() {
+  const f = document.getElementById('c-first').value.trim();
+  const l = document.getElementById('c-last').value.trim();
+  return ((f + '-' + l).toLowerCase().replace(/\s+/g,'-').replace(/^-|-$/g,'')) || 'card';
+}
+
+async function cardExportBoth() {
+  showToast('Rendering…');
+  const [frontC, backC] = await Promise.all([
+    captureCard('card-front', '#C45A48'),
+    captureCard('card-back',  '#ffffff'),
+  ]);
+  const cw = frontC.width, ch = frontC.height;
+  const canvasW = Math.round(cw * 1.28);
+  const canvasH = Math.round(canvasW * 4 / 3);
+  const cardX   = Math.round((canvasW - cw) / 2);
+  const gap     = Math.round((canvasH - ch * 2) / 5);
+  const topY    = gap * 1.4;
+
+  const out = document.createElement('canvas');
+  out.width = canvasW; out.height = canvasH;
+  const ctx = out.getContext('2d');
+  ctx.fillStyle = '#e0d9d0';
+  ctx.fillRect(0, 0, canvasW, canvasH);
+
+  const scale = 5;
+  const drawShadow = (c, x, y) => {
+    ctx.shadowColor = 'rgba(0,0,0,0.18)'; ctx.shadowBlur = 28 * scale;
+    ctx.shadowOffsetY = 8 * scale; ctx.shadowOffsetX = 0;
+    ctx.drawImage(c, x, y); ctx.shadowColor = 'transparent';
+  };
+  const r = 6 * scale;
+  const rr = (x, y, w, h) => {
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+  };
+
+  const fx = cardX, fy = Math.round(topY);
+  const bx = cardX, by = Math.round(topY + ch + gap);
+  ctx.save(); rr(fx,fy,cw,ch); ctx.clip(); drawShadow(frontC,fx,fy); ctx.restore();
+  ctx.save(); rr(bx,by,cw,ch); ctx.clip(); drawShadow(backC, bx,by); ctx.restore();
+
+  const a = document.createElement('a');
+  a.download = `etna-labs-${cardSlug()}.png`;
+  a.href = out.toDataURL('image/png');
+  a.click();
+  showToast('Exported ✓');
+}
+
+async function cardExportSingle(side) {
+  showToast('Rendering…');
+  const bg = side === 'front' ? '#C45A48' : '#ffffff';
+  const c  = await captureCard('card-' + side, bg);
+  const a  = document.createElement('a');
+  a.download = `etna-labs-${cardSlug()}-${side}.png`;
+  a.href = c.toDataURL('image/png');
+  a.click();
+  showToast(side === 'front' ? 'Front exported ✓' : 'Back exported ✓');
+}
+
+/* ── Toast ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ── Init ── */
+sigUpdate();
+</script>
+</body>
+</html>
