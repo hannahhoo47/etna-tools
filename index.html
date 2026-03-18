@@ -355,6 +355,51 @@
       font-size: 10.5px; color: #666; line-height: 1.5;
     }
 
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+
+    /* Tablet (≤ 1080px): narrow export column */
+    @media (max-width: 1080px) {
+      .card-export-col { width: 120px; }
+    }
+
+    /* Tablet (≤ 900px): stack both layouts */
+    @media (max-width: 900px) {
+      /* Signature: form on top, preview below */
+      .sig-layout { flex-direction: column; }
+      .sig-form { flex: none; width: 100%; max-width: 100%; }
+
+      /* Card: all three columns stack vertically */
+      .card-layout { flex-direction: column; gap: 28px; }
+      .card-form { width: 100%; position: static; }
+      .card-preview-panel { width: 100%; overflow-x: auto; }
+      .card-export-col {
+        width: 100%; position: static;
+        flex-direction: row; align-items: center;
+        flex-wrap: wrap; padding-top: 0; gap: 12px;
+      }
+      .card-export-col .export-label { margin-bottom: 0; white-space: nowrap; }
+      .card-export-col .btn-group { flex-direction: row; flex-wrap: wrap; }
+      .card-export-col .btn-group button { white-space: nowrap; }
+    }
+
+    /* Mobile (≤ 600px): tighter spacing + scale card */
+    @media (max-width: 600px) {
+      #panel-sig  { padding: 24px 16px 60px; }
+      #panel-card { padding: 24px 16px 60px; }
+      .site-header { padding: 28px 16px 0; }
+      .tab-btn { padding: 10px 16px; font-size: 9px; letter-spacing: 0.15em; }
+      .preview-box { padding: 16px; }
+      .sig-preview-panel { min-width: 0; overflow-x: hidden; }
+      #sig-render { transform-origin: top left; }
+
+      /* Scale card preview to fit screen */
+      .cards-scaler {
+        transform-origin: top left;
+      }
+    }
+
     /* Toast */
     .toast {
       position: fixed; bottom: 32px; left: 50%;
@@ -482,6 +527,7 @@
 
     <!-- Card preview -->
     <div class="card-preview-panel">
+      <div class="cards-scaler" id="cards-scaler">
       <div class="cards-stack">
 
         <div>
@@ -527,6 +573,7 @@
         </div>
 
       </div>
+      </div><!-- /cards-scaler -->
     </div>
 
     <!-- Export buttons — independent right column -->
@@ -742,8 +789,49 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
+/* ── Responsive card scaling ── */
+function scaleCards() {
+  const scaler = document.getElementById('cards-scaler');
+  if (!scaler) return;
+  const panel = scaler.parentElement;
+  const available = panel.clientWidth;
+  const cardW = 580 + 2; // card width + margin
+  if (available < cardW) {
+    const ratio = available / cardW;
+    scaler.style.transform = `scale(${ratio})`;
+    scaler.style.transformOrigin = 'top left';
+    // adjust container height so content below isn't hidden
+    const naturalH = scaler.scrollHeight;
+    panel.style.height = Math.round(naturalH * ratio) + 'px';
+  } else {
+    scaler.style.transform = '';
+    panel.style.height = '';
+  }
+}
+
+/* ── Responsive sig preview scaling ── */
+function scaleSig() {
+  const render = document.getElementById('sig-render');
+  if (!render) return;
+  const box = render.parentElement;
+  const available = box.clientWidth - 60; // minus padding
+  const sigW = 460;
+  if (available < sigW) {
+    const ratio = available / sigW;
+    render.style.transform = `scale(${ratio})`;
+    render.style.transformOrigin = 'top left';
+    render.style.marginBottom = `-${Math.round(sigW * (1 - ratio) * 0.5)}px`;
+  } else {
+    render.style.transform = '';
+    render.style.marginBottom = '';
+  }
+}
+
+window.addEventListener('resize', () => { scaleCards(); scaleSig(); });
+
 /* ── Init ── */
 sigUpdate();
+setTimeout(() => { scaleCards(); scaleSig(); }, 100);
 </script>
 </body>
 </html>
