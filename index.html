@@ -49,13 +49,91 @@
     }
 
     /* ─────────────────────────────────────────
-       TABS
+       PAGE LAYOUT
     ───────────────────────────────────────── */
+    .page-wrap {
+      display: flex;
+      gap: 40px;
+      max-width: 1300px;
+      margin: 32px auto 0;
+      padding: 0 24px 80px;
+      align-items: flex-start;
+    }
+
+    /* ─────────────────────────────────────────
+       SHARED FORM (left sidebar)
+    ───────────────────────────────────────── */
+    .shared-form {
+      width: 260px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 32px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 28px 22px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .shared-form .sec-label {
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--light); margin-bottom: 18px;
+    }
+    .shared-form .field { margin-bottom: 16px; }
+    .shared-form .field label {
+      display: block; font-size: 9.5px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 6px;
+    }
+    .shared-form input[type="text"] {
+      width: 100%; padding: 9px 11px;
+      border: 1.5px solid #cdc5bc; border-radius: 3px;
+      font-family: inherit; font-size: 13px;
+      color: var(--dark); background: white; outline: none;
+      transition: border-color 0.15s;
+    }
+    .shared-form input[type="text"]:focus { border-color: var(--brand); }
+    .shared-form input[type="text"]::placeholder { color: #c0b8b0; }
+
+    .shared-form .email-row { display: flex; }
+    .shared-form .email-row input { border-radius: 3px 0 0 3px; border-right: none; flex: 1; min-width: 0; }
+    .shared-form .email-suffix {
+      padding: 9px 8px; background: #eee8e1;
+      border: 1.5px solid #cdc5bc; border-left: none;
+      border-radius: 0 3px 3px 0; font-size: 11px; color: var(--mid);
+      white-space: nowrap; display: flex; align-items: center;
+    }
+
+    .shared-form hr.divider { border: none; border-top: 1px solid #cdc5bc; margin: 20px 0; }
+
+    .shared-form .fixed-info {
+      font-size: 11px; line-height: 1.85; color: var(--mid);
+      background: #eeebe6; border: 1px solid #ddd6cf;
+      border-radius: 3px; padding: 10px 12px;
+    }
+
+    .shared-form .hint {
+      font-size: 11px; color: #aaa; margin-top: 4px;
+    }
+
+    /* ─────────────────────────────────────────
+       RIGHT AREA
+    ───────────────────────────────────────── */
+    .right-area {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ─────────────────────────────────────────
+       TABS (inside right-area)
+    ───────────────────────────────────────── */
+    .tabs-bar {
+      margin-bottom: 28px;
+    }
     .tabs {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       gap: 0;
-      margin: 32px auto 0;
       width: fit-content;
       border: 1.5px solid #c8c0b8;
       border-radius: 5px;
@@ -87,51 +165,9 @@
        SIGNATURE TOOL
     ═════════════════════════════════════════ */
     #panel-sig {
-      padding: 40px 24px 80px;
+      /* no extra padding needed — page-wrap handles it */
     }
-    .sig-layout {
-      display: flex;
-      gap: 36px;
-      max-width: 1020px;
-      margin: 0 auto;
-      align-items: flex-start;
-    }
-    .sig-form {
-      flex: 0 0 300px;
-      background: #fff;
-      border-radius: 10px;
-      padding: 28px 24px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    }
-    .sig-preview-panel { flex: 1; min-width: 0; }
-
-    /* form elements */
-    .sig-form .sec { margin-bottom: 22px; }
-    .sig-form .sec-title {
-      font-size: 10px; letter-spacing: 0.15em;
-      text-transform: uppercase; color: #aaa;
-      margin-bottom: 12px; padding-bottom: 6px;
-      border-bottom: 1px solid #f0ebe8;
-    }
-    .sig-form label {
-      display: block; font-size: 12px;
-      color: #555; margin-bottom: 4px; margin-top: 12px;
-    }
-    .sig-form label:first-of-type { margin-top: 0; }
-    .sig-form input[type="text"] {
-      width: 100%; border: 1px solid #e0dbd8;
-      border-radius: 6px; padding: 8px 10px;
-      font-family: inherit; font-size: 13px; color: #222;
-      outline: none; transition: border-color 0.15s; background: #fff;
-    }
-    .sig-form input[type="text"]:focus { border-color: var(--brand); }
-    .sig-form input[type="text"]::placeholder { color: #bbb; }
-    .sig-form .fixed-box {
-      font-size: 11.5px; color: #999; line-height: 1.7;
-      background: #faf8f6; border: 1px solid #ede8e5;
-      border-radius: 6px; padding: 8px 10px; margin-top: 6px;
-    }
-    .sig-form .hint { font-size: 11px; color: #aaa; margin-top: 4px; }
+    .sig-preview-panel { min-width: 0; }
 
     /* preview */
     .preview-label {
@@ -188,52 +224,9 @@
        CARD TOOL
     ═════════════════════════════════════════ */
     #panel-card {
-      padding: 40px 24px 96px;
+      /* no extra padding needed */
     }
-    .card-layout {
-      display: flex; gap: 48px;
-      align-items: flex-start;
-      width: 100%; max-width: 1260px;
-      margin: 0 auto;
-    }
-    .card-form {
-      width: 248px; flex-shrink: 0;
-      position: sticky; top: 40px;
-    }
-    .card-form .sec-label {
-      font-size: 9.5px; font-weight: 600;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--light); margin-bottom: 18px;
-    }
-    .card-form .field { margin-bottom: 18px; }
-    .card-form .field label {
-      display: block; font-size: 9.5px; font-weight: 600;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--mid); margin-bottom: 6px;
-    }
-    .card-form input[type="text"] {
-      width: 100%; padding: 9px 11px;
-      border: 1.5px solid #cdc5bc; border-radius: 3px;
-      font-family: inherit; font-size: 13px;
-      color: var(--dark); background: white; outline: none;
-      transition: border-color 0.15s;
-    }
-    .card-form input[type="text"]:focus { border-color: var(--brand); }
-    .card-form input[type="text"]::placeholder { color: #c0b8b0; }
-    .card-form .email-row { display: flex; }
-    .card-form .email-row input { border-radius: 3px 0 0 3px; border-right: none; flex: 1; }
-    .card-form .email-suffix {
-      padding: 9px 8px; background: #eee8e1;
-      border: 1.5px solid #cdc5bc; border-left: none;
-      border-radius: 0 3px 3px 0; font-size: 11px; color: var(--mid);
-      white-space: nowrap; display: flex; align-items: center;
-    }
-    .card-form hr.divider { border: none; border-top: 1px solid #cdc5bc; margin: 24px 0; }
-    .card-form .fixed-info {
-      font-size: 11px; line-height: 1.85; color: var(--mid);
-      background: #eeebe6; border: 1px solid #ddd6cf;
-      border-radius: 3px; padding: 10px 12px;
-    }
+
     .card-export-col {
       width: 160px; flex-shrink: 0;
       position: sticky; top: 40px;
@@ -261,7 +254,7 @@
     .btn-group .btn-outline:hover { background: rgba(0,0,0,0.04); border-color: var(--dark); }
 
     /* card preview */
-    .card-preview-panel { flex: 1; }
+    .card-preview-panel { flex: 1; min-width: 0; }
     .panel-label {
       font-size: 9.5px; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
@@ -364,15 +357,15 @@
       .card-export-col { width: 120px; }
     }
 
-    /* Tablet (≤ 900px): stack both layouts */
+    /* Tablet/mobile (≤ 900px): stack page layout */
     @media (max-width: 900px) {
-      /* Signature: form on top, preview below */
-      .sig-layout { flex-direction: column; }
-      .sig-form { flex: none; width: 100%; max-width: 100%; }
+      .page-wrap { flex-direction: column; }
+      .shared-form { width: 100%; position: static; }
 
-      /* Card: all three columns stack vertically */
-      .card-layout { flex-direction: column; gap: 28px; }
-      .card-form { width: 100%; position: static; }
+      /* Card: preview + export stack vertically */
+      #panel-card > div {
+        flex-direction: column; gap: 28px;
+      }
       .card-preview-panel { width: 100%; overflow-x: auto; }
       .card-export-col {
         width: 100%; position: static;
@@ -386,8 +379,6 @@
 
     /* Mobile (≤ 600px): tighter spacing + scale card */
     @media (max-width: 600px) {
-      #panel-sig  { padding: 24px 16px 60px; }
-      #panel-card { padding: 24px 16px 60px; }
       .site-header { padding: 28px 16px 0; }
       .tab-btn { padding: 10px 16px; font-size: 9px; letter-spacing: 0.15em; }
       .preview-box { padding: 16px; }
@@ -423,171 +414,163 @@
   <p>Brand Tools</p>
 </header>
 
-<!-- ── Tabs ── -->
-<div style="display:flex;justify-content:center;margin-top:32px;">
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('sig', this)">Email Signature</button>
-    <button class="tab-btn"        onclick="switchTab('card', this)">Business Card</button>
+<!-- ── Main layout ── -->
+<div class="page-wrap">
+
+  <!-- LEFT: Shared form -->
+  <div class="shared-form">
+    <p class="sec-label">Your Info</p>
+
+    <div class="field">
+      <label>First Name</label>
+      <input type="text" id="f-first" placeholder="e.g. Siqi" oninput="sigUpdate(); cardUpdate();">
+    </div>
+    <div class="field">
+      <label>Last Name</label>
+      <input type="text" id="f-last" placeholder="e.g. Chen" oninput="sigUpdate(); cardUpdate();">
+    </div>
+    <div class="field">
+      <label>Title</label>
+      <input type="text" id="f-title" placeholder="e.g. Investment Analyst" oninput="sigUpdate(); cardUpdate();">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <div class="email-row">
+        <input type="text" id="f-email" placeholder="firstname.lastname" oninput="sigUpdate(); cardUpdate();">
+        <div class="email-suffix">@etnalabs.co</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Phone</label>
+      <input type="text" id="f-phone" value="(650) 668-4045" oninput="sigUpdate(); cardUpdate();">
+    </div>
+
+    <hr class="divider">
+    <p class="sec-label">Fixed Info</p>
+    <div class="fixed-info">
+      600 California St<br>San Francisco, CA 94108<br>etnalabs.co
+    </div>
+
+    <hr class="divider">
+    <p class="sec-label">Social (optional)</p>
+    <div class="field">
+      <label>LinkedIn URL</label>
+      <input type="text" id="f-linkedin" placeholder="linkedin.com/in/yourname" oninput="sigUpdate(); cardUpdate();">
+    </div>
+    <div class="field">
+      <label>X Handle</label>
+      <input type="text" id="f-x" placeholder="yourhandle (no @)" oninput="sigUpdate(); cardUpdate();">
+      <p class="hint">Leave blank to hide</p>
+    </div>
   </div>
-</div>
 
-<!-- ═══════════════════════════════════════
-     TAB 1 — EMAIL SIGNATURE
-═══════════════════════════════════════ -->
-<div id="panel-sig" class="tab-panel active">
-  <div class="sig-layout">
+  <!-- RIGHT: Tabs + Panels -->
+  <div class="right-area">
 
-    <!-- Form -->
-    <div class="sig-form">
-      <div class="sec">
-        <div class="sec-title">个人信息</div>
-        <label>姓名</label>
-        <input type="text" id="s-name" placeholder="Your Name" oninput="sigUpdate()">
-        <label>职位</label>
-        <input type="text" id="s-title" placeholder="Your Title" oninput="sigUpdate()">
-        <label>电话</label>
-        <input type="text" id="s-phone" placeholder="(650) 668-4045" oninput="sigUpdate()">
-      </div>
-      <div class="sec">
-        <div class="sec-title">公司信息（固定）</div>
-        <div class="fixed-box">600 California St, San Francisco, CA 94108<br>etnalabs.co</div>
-      </div>
-      <div class="sec">
-        <div class="sec-title">社交媒体（选填）</div>
-        <label>LinkedIn URL</label>
-        <input type="text" id="s-linkedin" placeholder="linkedin.com/in/yourname" oninput="sigUpdate()">
-        <label>X 用户名</label>
-        <input type="text" id="s-x" placeholder="yourhandle（不加 @）" oninput="sigUpdate()">
-        <p class="hint">留空则不显示</p>
+    <!-- Tab nav -->
+    <div class="tabs-bar">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('sig', this)">Email Signature</button>
+        <button class="tab-btn"        onclick="switchTab('card', this)">Business Card</button>
       </div>
     </div>
 
-    <!-- Preview -->
-    <div class="sig-preview-panel">
-      <p class="preview-label">HTML 签名预览</p>
-      <div class="preview-box"><div id="sig-render"></div></div>
+    <!-- ═══════════════════════════════════════
+         TAB 1 — EMAIL SIGNATURE
+    ═══════════════════════════════════════ -->
+    <div id="panel-sig" class="tab-panel active">
+      <div class="sig-preview-panel">
+        <p class="preview-label">HTML Signature Preview</p>
+        <div class="preview-box"><div id="sig-render"></div></div>
 
-      <div class="btn-row">
-        <button class="btn-html"  id="btn-copy-html"  onclick="sigCopyHTML()">复制 HTML 签名</button>
-        <button class="btn-plain" id="btn-copy-plain" onclick="sigCopyPlain()">复制纯文本签名</button>
-      </div>
-      <p class="copy-hint">
-        HTML → Gmail / Outlook / Apple Mail 签名设置中 HTML 模式粘贴<br>
-        纯文本 → 不支持 HTML 的客户端
-      </p>
+        <div class="btn-row">
+          <button class="btn-html"  id="btn-copy-html"  onclick="sigCopyHTML()">Copy HTML Signature</button>
+          <button class="btn-plain" id="btn-copy-plain" onclick="sigCopyPlain()">Copy Plain Text</button>
+        </div>
+        <p class="copy-hint">
+          HTML → Paste in Gmail / Outlook / Apple Mail signature settings (HTML mode)<br>
+          Plain text → For clients that don't support HTML
+        </p>
 
-      <div style="margin-top:20px;">
-        <p class="preview-label">纯文本预览（颜色仅为示意）</p>
-        <div class="plain-preview" id="sig-plain-render"></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════
-     TAB 2 — BUSINESS CARD
-═══════════════════════════════════════ -->
-<div id="panel-card" class="tab-panel">
-  <div class="card-layout">
-
-    <!-- Form -->
-    <div class="card-form">
-      <p class="sec-label">Card Info</p>
-      <div class="field">
-        <label>First Name</label>
-        <input type="text" id="c-first" placeholder="e.g. Siqi" oninput="cardUpdate()">
-      </div>
-      <div class="field">
-        <label>Last Name</label>
-        <input type="text" id="c-last" placeholder="e.g. Chen" oninput="cardUpdate()">
-      </div>
-      <div class="field">
-        <label>Title</label>
-        <input type="text" id="c-title" placeholder="e.g. Investment Analyst" oninput="cardUpdate()">
-      </div>
-      <div class="field">
-        <label>Email</label>
-        <div class="email-row">
-          <input type="text" id="c-email" placeholder="firstname.lastname" oninput="cardUpdate()">
-          <div class="email-suffix">@etnalabs.co</div>
+        <div style="margin-top:20px;">
+          <p class="preview-label">Plain Text Preview (colors for reference only)</p>
+          <div class="plain-preview" id="sig-plain-render"></div>
         </div>
       </div>
-      <div class="field">
-        <label>Phone</label>
-        <input type="text" id="c-phone" value="(650) 668-4045" oninput="cardUpdate()">
-      </div>
-
-      <hr class="divider">
-      <p class="sec-label">Fixed Info</p>
-      <div class="fixed-info">
-        600 California St<br>San Francisco, CA 94108<br>etnalabs.co
-      </div>
     </div>
 
-    <!-- Card preview -->
-    <div class="card-preview-panel">
-      <div class="cards-scaler" id="cards-scaler">
-      <div class="cards-stack">
+    <!-- ═══════════════════════════════════════
+         TAB 2 — BUSINESS CARD
+    ═══════════════════════════════════════ -->
+    <div id="panel-card" class="tab-panel">
+      <div style="display:flex;gap:40px;align-items:flex-start;">
 
-        <div>
-          <p class="panel-label">Front</p>
-          <div class="card" id="card-front">
-            <span class="front-url">etnalabs.co</span>
-            <img class="front-logo" src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/Etnalabs_redback.png" alt="Etna Labs" crossorigin="anonymous">
-          </div>
-        </div>
+        <!-- Card preview -->
+        <div class="card-preview-panel">
+          <div class="cards-scaler" id="cards-scaler">
+          <div class="cards-stack">
 
-        <div>
-          <p class="panel-label">Back</p>
-          <div class="card" id="card-back">
-            <div class="back-body">
-              <!-- Top row: logo left / tagline right -->
-              <div class="back-top-row">
-                <img class="back-logo"
-                     src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/EtnaLabs_horizontal_trans.png"
-                     alt="Etna Labs" crossorigin="anonymous">
-                <div class="back-tagline">
-                  <span class="tl-plain">We Invest Like Researchers.</span>
-                  <span class="tl-serif">Deep Conviction.</span>
-                  <span class="tl-plain">Long View.</span>
-                </div>
+            <div>
+              <p class="panel-label">Front</p>
+              <div class="card" id="card-front">
+                <span class="front-url">etnalabs.co</span>
+                <img class="front-logo" src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/Etnalabs_redback.png" alt="Etna Labs" crossorigin="anonymous">
               </div>
-              <!-- Bottom row: name/title left / contacts right -->
-              <div class="back-bottom-row">
-                <div class="back-ident">
-                  <div class="back-name">
-                    <span class="firstname" id="c-prev-first">Your</span>&nbsp;<span class="lastname" id="c-prev-last">Name</span>
+            </div>
+
+            <div>
+              <p class="panel-label">Back</p>
+              <div class="card" id="card-back">
+                <div class="back-body">
+                  <!-- Top row: logo left / tagline right -->
+                  <div class="back-top-row">
+                    <img class="back-logo"
+                         src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/EtnaLabs_horizontal_trans.png"
+                         alt="Etna Labs" crossorigin="anonymous">
+                    <div class="back-tagline">
+                      <span class="tl-plain">We Invest Like Researchers.</span>
+                      <span class="tl-serif">Deep Conviction.</span>
+                      <span class="tl-plain">Long View.</span>
+                    </div>
                   </div>
-                  <div class="back-title" id="c-prev-title">Title</div>
-                </div>
-                <div class="back-contact-right">
-                  <span id="c-prev-email">name@etnalabs.co</span>
-                  <span id="c-prev-phone">(650) 668-4045</span>
-                  <span>600 California St, San Francisco, CA</span>
-                  <span>etnalabs.co</span>
+                  <!-- Bottom row: name/title left / contacts right -->
+                  <div class="back-bottom-row">
+                    <div class="back-ident">
+                      <div class="back-name">
+                        <span class="firstname" id="c-prev-first">Your</span>&nbsp;<span class="lastname" id="c-prev-last">Name</span>
+                      </div>
+                      <div class="back-title" id="c-prev-title">Title</div>
+                    </div>
+                    <div class="back-contact-right">
+                      <span id="c-prev-email">name@etnalabs.co</span>
+                      <span id="c-prev-phone">(650) 668-4045</span>
+                      <span>600 California St, San Francisco, CA</span>
+                      <span>etnalabs.co</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+          </div>
+          </div><!-- /cards-scaler -->
+        </div>
+
+        <!-- Export buttons -->
+        <div class="card-export-col">
+          <p class="export-label">Export</p>
+          <div class="btn-group">
+            <button class="btn-brand"   onclick="cardExportBoth()">&#8595; Both Sides</button>
+            <button class="btn-outline" onclick="cardExportSingle('front')">&#8595; Front Only</button>
+            <button class="btn-outline" onclick="cardExportSingle('back')">&#8595; Back Only</button>
           </div>
         </div>
 
       </div>
-      </div><!-- /cards-scaler -->
     </div>
 
-    <!-- Export buttons — independent right column -->
-    <div class="card-export-col">
-      <p class="export-label">Export</p>
-      <div class="btn-group">
-        <button class="btn-brand"   onclick="cardExportBoth()">↓ Both Sides</button>
-        <button class="btn-outline" onclick="cardExportSingle('front')">↓ Front Only</button>
-        <button class="btn-outline" onclick="cardExportSingle('back')">↓ Back Only</button>
-      </div>
-    </div>
-
-  </div>
-</div>
+  </div><!-- /right-area -->
+</div><!-- /page-wrap -->
 
 <div class="toast" id="toast"></div>
 
@@ -617,12 +600,15 @@ function esc(s) {
 }
 
 function sigFields() {
+  const first = document.getElementById('f-first').value.trim();
+  const last  = document.getElementById('f-last').value.trim();
+  const name  = ((first + ' ' + last).trim()) || 'Your Name';
   return {
-    name:     document.getElementById('s-name').value.trim()     || 'Your Name',
-    title:    document.getElementById('s-title').value.trim()    || 'Your Title',
-    phone:    document.getElementById('s-phone').value.trim()    || '(650) 668-4045',
-    linkedin: document.getElementById('s-linkedin').value.trim(),
-    xhandle:  document.getElementById('s-x').value.trim().replace(/^@/, '')
+    name,
+    title:    document.getElementById('f-title').value.trim()   || 'Your Title',
+    phone:    document.getElementById('f-phone').value.trim()   || '(650) 668-4045',
+    linkedin: document.getElementById('f-linkedin').value.trim(),
+    xhandle:  document.getElementById('f-x').value.trim().replace(/^@/, '')
   };
 }
 
@@ -683,16 +669,16 @@ function sigUpdate() {
 function sigCopyHTML() {
   navigator.clipboard.writeText(buildSigHTML()).then(() => {
     const b = document.getElementById('btn-copy-html');
-    b.textContent = '✓ 已复制 HTML'; b.classList.add('ok');
-    setTimeout(() => { b.textContent = '复制 HTML 签名'; b.classList.remove('ok'); }, 2000);
+    b.textContent = '✓ Copied HTML'; b.classList.add('ok');
+    setTimeout(() => { b.textContent = 'Copy HTML Signature'; b.classList.remove('ok'); }, 2000);
   });
 }
 
 function sigCopyPlain() {
   navigator.clipboard.writeText(buildSigPlainText()).then(() => {
     const b = document.getElementById('btn-copy-plain');
-    b.textContent = '✓ 已复制纯文本'; b.classList.add('ok');
-    setTimeout(() => { b.textContent = '复制纯文本签名'; b.classList.remove('ok'); }, 2000);
+    b.textContent = '✓ Copied Plain Text'; b.classList.add('ok');
+    setTimeout(() => { b.textContent = 'Copy Plain Text'; b.classList.remove('ok'); }, 2000);
   });
 }
 
@@ -700,11 +686,11 @@ function sigCopyPlain() {
    BUSINESS CARD
 ════════════════════════════════════════ */
 function cardUpdate() {
-  const first = document.getElementById('c-first').value.trim();
-  const last  = document.getElementById('c-last').value.trim();
-  const title = document.getElementById('c-title').value.trim();
-  const email = document.getElementById('c-email').value.trim();
-  const phone = document.getElementById('c-phone').value.trim();
+  const first = document.getElementById('f-first').value.trim();
+  const last  = document.getElementById('f-last').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
   document.getElementById('c-prev-first').textContent = first || 'Your';
   document.getElementById('c-prev-last').textContent  = last  || 'Name';
   document.getElementById('c-prev-title').textContent = title || 'Title';
@@ -722,8 +708,8 @@ async function captureCard(id, bg) {
 }
 
 function cardSlug() {
-  const f = document.getElementById('c-first').value.trim();
-  const l = document.getElementById('c-last').value.trim();
+  const f = document.getElementById('f-first').value.trim();
+  const l = document.getElementById('f-last').value.trim();
   return ((f + '-' + l).toLowerCase().replace(/\s+/g,'-').replace(/^-|-$/g,'')) || 'card';
 }
 
@@ -836,8 +822,7 @@ window.addEventListener('resize', () => { scaleCards(); scaleSig(); });
 /* ════════════════════════════════════════
    PERSIST FORM VALUES via localStorage
 ════════════════════════════════════════ */
-const FIELDS = ['s-name','s-title','s-phone','s-linkedin','s-x',
-                'c-first','c-last','c-title','c-email','c-phone'];
+const FIELDS = ['f-first','f-last','f-title','f-email','f-phone','f-linkedin','f-x'];
 
 function saveFields() {
   FIELDS.forEach(id => {
@@ -864,7 +849,6 @@ FIELDS.forEach(id => {
 restoreFields();
 sigUpdate();
 cardUpdate();
-// Run after full paint so panel dimensions are accurate
 requestAnimationFrame(() => requestAnimationFrame(() => { scaleCards(); scaleSig(); }));
 </script>
 </body>
