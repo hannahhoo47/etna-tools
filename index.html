@@ -833,8 +833,37 @@ function scaleSig() {
 
 window.addEventListener('resize', () => { scaleCards(); scaleSig(); });
 
+/* ════════════════════════════════════════
+   PERSIST FORM VALUES via localStorage
+════════════════════════════════════════ */
+const FIELDS = ['s-name','s-title','s-phone','s-linkedin','s-x',
+                'c-first','c-last','c-title','c-email','c-phone'];
+
+function saveFields() {
+  FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) localStorage.setItem('etna_' + id, el.value);
+  });
+}
+
+function restoreFields() {
+  FIELDS.forEach(id => {
+    const saved = localStorage.getItem('etna_' + id);
+    const el = document.getElementById(id);
+    if (el && saved !== null) el.value = saved;
+  });
+}
+
+// Hook save into every input event
+FIELDS.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', saveFields);
+});
+
 /* ── Init ── */
+restoreFields();
 sigUpdate();
+cardUpdate();
 // Run after full paint so panel dimensions are accurate
 requestAnimationFrame(() => requestAnimationFrame(() => { scaleCards(); scaleSig(); }));
 </script>
