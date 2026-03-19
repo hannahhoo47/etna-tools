@@ -601,6 +601,8 @@ function switchTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   btn.classList.add('active');
+  // Re-run scaling after tab becomes visible
+  requestAnimationFrame(() => { scaleCards(); scaleSig(); });
 }
 
 /* ════════════════════════════════════════
@@ -795,13 +797,14 @@ function scaleCards() {
   if (!scaler) return;
   const panel = scaler.parentElement;
   const available = panel.clientWidth;
-  const cardW = 580 + 2; // card width + margin
+  // Skip if panel is hidden (tab not active) or too narrow to be real
+  if (available < 100) { scaler.style.transform = ''; panel.style.height = ''; return; }
+  const cardW = 582;
   if (available < cardW) {
     const ratio = available / cardW;
     scaler.style.transform = `scale(${ratio})`;
     scaler.style.transformOrigin = 'top left';
-    // adjust container height so content below isn't hidden
-    const naturalH = scaler.scrollHeight;
+    const naturalH = scaler.offsetHeight;
     panel.style.height = Math.round(naturalH * ratio) + 'px';
   } else {
     scaler.style.transform = '';
@@ -814,13 +817,14 @@ function scaleSig() {
   const render = document.getElementById('sig-render');
   if (!render) return;
   const box = render.parentElement;
-  const available = box.clientWidth - 60; // minus padding
+  const available = box.clientWidth - 60;
+  if (available < 100) return;
   const sigW = 460;
   if (available < sigW) {
     const ratio = available / sigW;
     render.style.transform = `scale(${ratio})`;
     render.style.transformOrigin = 'top left';
-    render.style.marginBottom = `-${Math.round(sigW * (1 - ratio) * 0.5)}px`;
+    render.style.marginBottom = `-${Math.round(render.offsetHeight * (1 - ratio))}px`;
   } else {
     render.style.transform = '';
     render.style.marginBottom = '';
@@ -831,7 +835,8 @@ window.addEventListener('resize', () => { scaleCards(); scaleSig(); });
 
 /* ── Init ── */
 sigUpdate();
-setTimeout(() => { scaleCards(); scaleSig(); }, 100);
+// Run after full paint so panel dimensions are accurate
+requestAnimationFrame(() => requestAnimationFrame(() => { scaleCards(); scaleSig(); }));
 </script>
 </body>
 </html>
