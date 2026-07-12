@@ -15,7 +15,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --brand:  #C45A48;
+      --brand:  #C43426;
       --dark:   #111111;
       --mid:    #555;
       --light:  #999;
@@ -437,7 +437,7 @@
       <label>Email</label>
       <div class="email-row">
         <input type="text" id="f-email" placeholder="firstname.lastname" oninput="sigUpdate(); cardUpdate();">
-        <div class="email-suffix">@etnalabs.co</div>
+        <div class="email-suffix">@etnalabs.ai</div>
       </div>
     </div>
     <div class="field">
@@ -448,7 +448,7 @@
     <hr class="divider">
     <p class="sec-label">Fixed Info</p>
     <div class="fixed-info">
-      600 California St<br>San Francisco, CA 94108<br>etnalabs.co
+      600 California St<br>San Francisco, CA 94108<br>etnalabs.ai
     </div>
 
     <hr class="divider">
@@ -513,7 +513,7 @@
             <div>
               <p class="panel-label">Front</p>
               <div class="card" id="card-front">
-                <span class="front-url">etnalabs.co</span>
+                <span class="front-url">etnalabs.ai</span>
                 <img class="front-logo" src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/Etnalabs_redback.png" alt="Etna Labs" crossorigin="anonymous">
               </div>
             </div>
@@ -528,7 +528,6 @@
                          src="https://raw.githubusercontent.com/hannahhoo47/Etna-Asset/main/EtnaLabs_horizontal_trans.png"
                          alt="Etna Labs" crossorigin="anonymous">
                     <div class="back-tagline">
-                      <span class="tl-plain">We Invest Like Researchers.</span>
                       <span class="tl-serif">Deep Conviction.</span>
                       <span class="tl-plain">Long View.</span>
                     </div>
@@ -537,15 +536,15 @@
                   <div class="back-bottom-row">
                     <div class="back-ident">
                       <div class="back-name">
-                        <span class="firstname" id="c-prev-first">Your</span>&nbsp;<span class="lastname" id="c-prev-last">Name</span>
+                        <span class="firstname" id="c-prev-first">Tom</span>&nbsp;<span class="lastname" id="c-prev-last">Liu</span>
                       </div>
                       <div class="back-title" id="c-prev-title">Title</div>
                     </div>
                     <div class="back-contact-right">
-                      <span id="c-prev-email">name@etnalabs.co</span>
+                      <span id="c-prev-email">tom.liu@etnalabs.ai</span>
                       <span id="c-prev-phone">(650) 668-4045</span>
                       <span>600 California St, San Francisco, CA</span>
-                      <span>etnalabs.co</span>
+                      <span>etnalabs.ai</span>
                     </div>
                   </div>
                 </div>
@@ -602,7 +601,7 @@ function esc(s) {
 function sigFields() {
   const first = document.getElementById('f-first').value.trim();
   const last  = document.getElementById('f-last').value.trim();
-  const name  = ((first + ' ' + last).trim()) || 'Your Name';
+  const name  = ((first + ' ' + last).trim()) || 'Tom Liu';
   return {
     name,
     title:    document.getElementById('f-title').value.trim()   || 'Your Title',
@@ -620,15 +619,15 @@ function buildSigHTML() {
     const x  = xhandle  ? `<td valign="middle"><a href="https://x.com/${esc(xhandle)}" style="text-decoration:none;display:block;"><img src="${ICON_X}" alt="X" width="14" height="14" style="display:block;width:14px;height:14px;"></a></td>` : '';
     socialRow = `<table cellpadding="0" cellspacing="0" border="0" style="margin-top:8px;"><tr>${li}${x}</tr></table>`;
   }
-  return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border-right:3px solid #C45A48;background:#ffffff;max-width:460px;width:460px;">
+  return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border-right:3px solid #C43426;background:#ffffff;max-width:460px;width:460px;">
   <tr><td style="padding:20px 24px 20px 28px;">
     <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr>
       <td valign="middle" style="padding-right:20px;">
         <p style="margin:0 0 1px;font-size:15px;font-weight:700;color:#111111;letter-spacing:0.03em;">${esc(name)}</p>
         <p style="margin:0 0 10px;font-size:11px;color:#555555;letter-spacing:0.08em;text-transform:uppercase;">${esc(title)}</p>
         <table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td style="border-top:1px solid #ecddd9;font-size:0;height:1px;padding:0 0 10px;">&nbsp;</td></tr></table>
-        <p style="margin:0 0 9px;font-size:11px;color:#C45A48;letter-spacing:0.03em;"><strong>Etna Labs</strong> <span style="color:#c0a49f;font-weight:400;"> | </span><span style="font-weight:400;">Deep Conviction, Long View</span></p>
-        <p style="margin:0;font-size:11px;color:#666666;line-height:1.75;">600 California St, San Francisco, CA 94108<br>${esc(phone)}<br><a href="https://etnalabs.co" style="color:#C45A48;text-decoration:none;">etnalabs.co</a></p>
+        <p style="margin:0 0 9px;font-size:11px;color:#C43426;letter-spacing:0.03em;"><strong>Etna Labs</strong> <span style="color:#c0a49f;font-weight:400;"> | </span><span style="font-weight:400;">Deep Conviction, Long View</span></p>
+        <p style="margin:0;font-size:11px;color:#666666;line-height:1.75;">600 California St, San Francisco, CA 94108<br>${esc(phone)}<br><a href="https://etnalabs.ai" style="color:#C43426;text-decoration:none;">etnalabs.ai</a></p>
         ${socialRow}
       </td>
       <td valign="middle" style="width:1px;background:#e8d0ce;padding:0;" width="1"><div style="width:1px;height:80px;background:#e8d0ce;font-size:0;line-height:0;">&nbsp;</div></td>
@@ -646,7 +645,7 @@ function buildSigPlainText() {
   let social = '';
   if (linkedin) social += '\nLinkedIn  ' + (linkedin.startsWith('http') ? linkedin : 'https://' + linkedin);
   if (xhandle)  social += '\nX (Twitter)  https://x.com/' + xhandle;
-  return `${name}  |  ${title}\n${rule}\nEtna Labs  |  Deep Conviction, Long View\n\n600 California St, San Francisco, CA 94108\n${phone}\netnalabs.co${social}`;
+  return `${name}  |  ${title}\n${rule}\nEtna Labs  |  Deep Conviction, Long View\n\n600 California St, San Francisco, CA 94108\n${phone}\netnalabs.ai${social}`;
 }
 
 function buildSigPlainHTML() {
@@ -658,7 +657,7 @@ function buildSigPlainHTML() {
     social += `\n<span class="pt-meta">LinkedIn  </span><span class="pt-link">${url}</span>`;
   }
   if (xhandle) social += `\n<span class="pt-meta">X (Twitter)  </span><span class="pt-link">https://x.com/${xhandle}</span>`;
-  return `<span class="pt-name">${name}</span><span class="pt-sep">  |  </span><span class="pt-meta">${title}</span>\n<span class="pt-rule">${rule}</span>\n<span class="pt-brand">Etna Labs</span><span class="pt-sep">  |  </span><span class="pt-meta">Deep Conviction, Long View</span>\n\n<span class="pt-meta">600 California St, San Francisco, CA 94108\n${phone}</span>\n<span class="pt-link">etnalabs.co</span>${social}`;
+  return `<span class="pt-name">${name}</span><span class="pt-sep">  |  </span><span class="pt-meta">${title}</span>\n<span class="pt-rule">${rule}</span>\n<span class="pt-brand">Etna Labs</span><span class="pt-sep">  |  </span><span class="pt-meta">Deep Conviction, Long View</span>\n\n<span class="pt-meta">600 California St, San Francisco, CA 94108\n${phone}</span>\n<span class="pt-link">etnalabs.ai</span>${social}`;
 }
 
 function sigUpdate() {
@@ -691,10 +690,10 @@ function cardUpdate() {
   const title = document.getElementById('f-title').value.trim();
   const email = document.getElementById('f-email').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
-  document.getElementById('c-prev-first').textContent = first || 'Your';
-  document.getElementById('c-prev-last').textContent  = last  || 'Name';
+  document.getElementById('c-prev-first').textContent = first || 'Tom';
+  document.getElementById('c-prev-last').textContent  = last  || 'Liu';
   document.getElementById('c-prev-title').textContent = title || 'Title';
-  document.getElementById('c-prev-email').textContent = (email || 'name') + '@etnalabs.co';
+  document.getElementById('c-prev-email').textContent = (email || 'tom.liu') + '@etnalabs.ai';
   document.getElementById('c-prev-phone').textContent = phone || '(650) 668-4045';
 }
 
@@ -716,7 +715,7 @@ function cardSlug() {
 async function cardExportBoth() {
   showToast('Rendering…');
   const [frontC, backC] = await Promise.all([
-    captureCard('card-front', '#C45A48'),
+    captureCard('card-front', '#C43426'),
     captureCard('card-back',  '#ffffff'),
   ]);
   const cw = frontC.width, ch = frontC.height;
@@ -761,7 +760,7 @@ async function cardExportBoth() {
 
 async function cardExportSingle(side) {
   showToast('Rendering…');
-  const bg = side === 'front' ? '#C45A48' : '#ffffff';
+  const bg = side === 'front' ? '#C43426' : '#ffffff';
   const c  = await captureCard('card-' + side, bg);
   const a  = document.createElement('a');
   a.download = `etna-labs-${cardSlug()}-${side}.png`;
